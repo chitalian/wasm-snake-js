@@ -1,10 +1,11 @@
-import { Universe, Cell, Direction } from "wasm-game-of-life";
-import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
+import { Universe, Cell, Direction } from "snake";
+import { memory } from "snake/snake_bg";
 
-function sleepFor( sleepDuration ){
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 const CELL_SIZE = 10; // px
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
@@ -77,10 +78,10 @@ const drawGrid = () => {
     ctx.stroke();
 };
 
-const renderLoop = () => {
+async function renderLoop() {
   if (!universe.is_gameover()) {
     universe.tick();
-    sleepFor(100)
+    await sleep(100);
   
     drawGrid();
     drawCells();
